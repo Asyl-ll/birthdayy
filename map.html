@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>С Днём Рождения 🎀</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Nothing+You+Could+Do&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --black: #0a0a0a;
+  --gold: #c9a84c;
+  --gold2: #f0d070;
+  --gold3: #e8c060;
+  --paperdark: #f0e8d8;
+  --pink2: #e8a8b5;
+  --blush: #fde8ec;
+  --ink: #2a1e14;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--black); font-family: 'Caveat', cursive; color: var(--ink); overflow-x: hidden; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh; background: var(--black);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  position: relative; padding: 3rem 2rem 2rem; overflow: hidden;
+}
+.star { position:absolute; border-radius:50%; background:var(--gold2); opacity:0; animation:twinkle var(--d,4s) var(--dl,0s) infinite ease-in-out; pointer-events:none; }
+@keyframes twinkle { 0%,100%{opacity:0;transform:scale(.5)} 50%{opacity:.9;transform:scale(1.3)} }
+.hero::before { content:''; position:absolute; inset:0; pointer-events:none; background:radial-gradient(ellipse 70% 55% at 50% 48%, rgba(201,168,76,.13) 0%, transparent 70%); }
+.petal { position:absolute; opacity:0; animation:floatPetal var(--pd,8s) var(--pdl,0s) infinite ease-in-out; pointer-events:none; }
+@keyframes floatPetal { 0%{opacity:0;transform:translateY(0) rotate(0deg)} 15%{opacity:.7} 85%{opacity:.4} 100%{opacity:0;transform:translateY(-130px) rotate(360deg)} }
+
+.hero-eyebrow { font-family:'Cormorant Garamond',serif; font-size:clamp(.75rem,2vw,.95rem); letter-spacing:.5em; text-transform:uppercase; color:var(--gold); opacity:0; animation:fadeUp .8s .2s forwards; margin-bottom:.8rem; display:block; }
+.hero-title { font-family:'Cormorant Garamond',serif; font-weight:300; font-style:italic; font-size:clamp(3.5rem,16vw,9rem); line-height:.95; text-align:center; background:linear-gradient(145deg,var(--gold2) 0%,var(--gold) 45%,var(--gold3) 70%,var(--gold2) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; opacity:0; animation:fadeUp 1s .4s forwards; }
+.hero-name { font-family:'Nothing You Could Do',cursive; font-size:clamp(1.8rem,8vw,4rem); color:var(--gold2); opacity:0; animation:fadeUp 1s .65s forwards; margin-top:.4rem; text-align:center; display:block; }
+.hero-line { display:flex; align-items:center; gap:1rem; opacity:0; animation:fadeUp .8s .85s forwards; margin:.8rem 0; }
+.hline { height:1px; width:80px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+.hdiamond { width:7px;height:7px; background:var(--gold); transform:rotate(45deg); }
+.hero-sub { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(1rem,3.5vw,1.5rem); color:rgba(201,168,76,.7); text-align:center; max-width:460px; opacity:0; animation:fadeUp .8s 1.05s forwards; display:block; }
+.scroll-hint { position:absolute; bottom:2rem; left:50%; transform:translateX(-50%); font-family:'Cormorant Garamond',serif; font-style:italic; font-size:.9rem; letter-spacing:.15em; color:rgba(201,168,76,.5); opacity:0; animation:fadeUp .8s 1.5s forwards; text-align:center; cursor:pointer; }
+.arrow-down { margin:.4rem auto 0; width:16px;height:16px; border-right:1.5px solid var(--gold); border-bottom:1.5px solid var(--gold); transform:rotate(45deg); animation:bounce 1.6s infinite; }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(26px)} to{opacity:1;transform:translateY(0)} }
+@keyframes bounce { 0%,100%{transform:rotate(45deg) translateY(0)} 50%{transform:rotate(45deg) translateY(6px)} }
+@keyframes heartbeat { 0%,100%{transform:scale(1)} 30%{transform:scale(1.3)} 60%{transform:scale(1.1)} }
+@keyframes popIn { from{opacity:0;transform:scale(0) rotate(-10deg)} to{opacity:1} }
+
+/* ── FRAMES SECTION ── */
+.frames-section { background:var(--black); padding:3rem 1rem 7rem; display:flex; flex-direction:column; align-items:center; gap:6rem; }
+.reveal { opacity:0; transform:translateY(55px) rotate(var(--rot,0deg)); transition:opacity .9s ease,transform .9s ease; }
+.reveal.visible { opacity:1; transform:translateY(0) rotate(var(--rot,0deg)); }
+
+/* Photo img base */
+.photo-img { width:100%; height:100%; object-fit:cover; display:block; position:absolute; inset:0; }
+
+/* Photo slot base (shown when NO image) */
+.pslot { width:100%; background:#1a1610; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.6rem; color:rgba(201,168,76,.25); font-family:'Caveat',cursive; font-size:.85rem; position:relative; overflow:hidden; }
+
+/* Caption under frame */
+.frame-caption { font-family:'Nothing You Could Do',cursive; font-size:1.25rem; color:rgba(201,168,76,.75); text-align:center; margin-top:.6rem; display:block; }
+
+/* Heart stickers */
+.heart-sticker { position:absolute; font-size:1.4rem; opacity:0; animation:popIn .5s forwards; z-index:12; pointer-events:none; }
+
+/* ══ POLAROID ══ */
+.polaroid { background:#fff; padding:13px 13px 52px; box-shadow:3px 6px 24px rgba(0,0,0,.55); width:100%; max-width:320px; position:relative; }
+.polaroid .pslot { aspect-ratio:1; background:#f0ece6; color:rgba(120,100,80,.3); }
+.pol-caption { position:absolute; bottom:10px; left:0;right:0; text-align:center; font-family:'Nothing You Could Do',cursive; font-size:1.2rem; color:#5a4030; }
+
+/* ══ FILM ══ */
+.film-wrap { background:#111; border-radius:4px; padding:0 10px; box-shadow:4px 6px 28px rgba(0,0,0,.7); width:100%; max-width:360px; }
+.film-holes { display:flex; justify-content:space-around; padding:7px 0; }
+.fhole { width:13px;height:11px; background:#222; border-radius:2px; }
+.film-photo { width:100%; aspect-ratio:3/2; background:#1a1a1a; display:flex;flex-direction:column; align-items:center;justify-content:center; gap:.5rem; color:rgba(255,255,255,.2); font-family:'Caveat',cursive; font-size:.85rem; position:relative; overflow:hidden; }
+
+/* ══ NOTE CARD ══ */
+.note-card { background:var(--blush); border:1.5px solid rgba(232,168,181,.5); padding:2rem 1.8rem 2.2rem; width:100%; max-width:330px; position:relative; box-shadow:3px 5px 22px rgba(0,0,0,.5); }
+.note-ruled { position:absolute;inset:0; background-image:repeating-linear-gradient(transparent,transparent 31px,rgba(232,168,181,.28) 31px,rgba(232,168,181,.28) 32px); pointer-events:none; }
+.note-photo { width:100%; aspect-ratio:1; background:rgba(255,255,255,.5); border:1px dashed rgba(232,168,181,.7); display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem; color:rgba(160,100,110,.3);font-family:'Caveat',cursive;font-size:.85rem; position:relative;overflow:hidden; margin-bottom:1rem; }
+.note-text { font-family:'Nothing You Could Do',cursive; font-size:1.3rem; line-height:1.85; color:var(--ink); position:relative; }
+.stamp { position:absolute; bottom:1rem;right:1rem; width:52px;height:62px; border:2px solid var(--pink2); display:flex;flex-direction:column;align-items:center;justify-content:center; font-family:'Caveat',cursive;font-size:.6rem; background:rgba(255,255,255,.55); padding:3px; color:var(--pink2); transform:rotate(5deg); }
+.stamp span { font-size:1.5rem;display:block; }
+
+/* ══ ENVELOPE ══ */
+.envelope-card { background:#fffef8; border:1.5px solid rgba(201,168,76,.3); padding:1.5rem 1.5rem 1.8rem; box-shadow:3px 5px 26px rgba(0,0,0,.5); position:relative; width:100%; max-width:360px; }
+.envelope-card::before { content:''; position:absolute; top:0;left:0;right:0; border-left:180px solid transparent; border-right:180px solid transparent; border-top:68px solid rgba(201,168,76,.18); pointer-events:none; }
+.env-photo { width:100%; aspect-ratio:4/3; background:#f5f0e8;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;color:rgba(120,100,60,.3);font-family:'Caveat',cursive; position:relative;overflow:hidden;margin-top:3rem; border:1px solid rgba(201,168,76,.2); }
+.env-wax { position:absolute;bottom:-14px;left:50%;transform:translateX(-50%); font-size:2rem; z-index:15; }
+
+/* ══ INSTAX ══ */
+.instax-strip { background:#fff; padding:10px 10px 16px; box-shadow:3px 6px 22px rgba(0,0,0,.5); display:flex;flex-direction:column;gap:5px; width:190px; position:relative; }
+.strip-slot { width:100%;aspect-ratio:4/3;background:#f0ece6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;color:rgba(120,100,80,.3);font-size:.8rem;font-family:'Caveat',cursive; position:relative;overflow:hidden; }
+.instax-label { font-family:'Nothing You Could Do',cursive; font-size:1rem; color:#5a4030; text-align:center; margin-top:3px; display:block; }
+
+/* ══ SCRAPBOOK ══ */
+.scrap-page { background:var(--paperdark); border:1px solid rgba(180,160,130,.3); padding:1.8rem 1.5rem 1.5rem; box-shadow:4px 6px 28px rgba(0,0,0,.55); position:relative; width:100%; max-width:380px; display:flex;flex-direction:column;gap:.9rem; }
+.scrap-ruled { position:absolute;inset:0; background-image:repeating-linear-gradient(transparent,transparent 27px,rgba(180,160,130,.13) 27px,rgba(180,160,130,.13) 28px); pointer-events:none; }
+.scrap-row { display:flex; gap:.7rem; }
+.scrap-slot { flex:1;aspect-ratio:1;background:#ddd5c5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem;color:rgba(100,80,60,.3);font-size:.75rem;font-family:'Caveat',cursive; position:relative;overflow:hidden;border:1px solid rgba(180,160,130,.25); }
+.scrap-slot.wide { flex:2; }
+.scrap-title { font-family:'Nothing You Could Do',cursive;font-size:1.45rem;text-align:center;color:var(--ink);position:relative;padding-top:.2rem; }
+.scrap-footer { display:flex;justify-content:space-between;align-items:flex-end; }
+.scrap-sign { font-family:'Nothing You Claude Do',cursive;font-size:1.1rem;color:var(--ink);transform:rotate(-2deg);display:inline-block; }
+
+/* FOOTER */
+.footer { background:var(--black);text-align:center;padding:3rem 1rem 5rem;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.4rem;color:rgba(201,168,76,.65); }
+.footer-deco { font-size:2rem;margin-bottom:.6rem;animation:heartbeat 2.2s ease infinite;display:block; }
+</style>
+</head>
+<body>
+
+<!-- ─── HERO ─── -->
+<section class="hero" id="hero">
+  <span class="hero-eyebrow">✦ поздравление ✦</span>
+  <h1 class="hero-title">С Днём<br>Рождения</h1>
+  <!-- ✏️ ЗАМЕНИ ТЕКСТ НИЖЕ — имя именинника -->
+  <span class="hero-name">— имя —</span>
+  <div class="hero-line">
+    <div class="hline"></div><div class="hdiamond"></div><div class="hline"></div>
+  </div>
+  <!-- ✏️ ЗАМЕНИ ТЕКСТ НИЖЕ — подпись под заголовком -->
+  <span class="hero-sub">Пусть этот день сияет так же ярко, как ты</span>
+  <div class="scroll-hint" onclick="document.querySelector('.frames-section').scrollIntoView({behavior:'smooth'})">
+    листай вниз <div class="arrow-down"></div>
+  </div>
+</section>
+
+<!-- ─── FRAMES ─── -->
+<section class="frames-section">
+
+  <!-- ══════════════════════════════
+       РАМКА 1 — Полароид
+       Замени src="ФОТО_1" на путь к своему файлу,
+       например src="photo1.jpg"
+       ══════════════════════════════ -->
+  <div class="reveal" style="--rot:-2.5deg;position:relative;display:flex;flex-direction:column;align-items:center;">
+    <div style="position:absolute;top:-11px;left:50%;margin-left:-36px;width:72px;height:20px;background:rgba(180,210,195,.55);border-radius:2px;transform:rotate(-3deg);z-index:20;"></div>
+    <span class="heart-sticker" style="top:-22px;right:18px;animation-delay:.3s;transform:rotate(15deg);">🩷</span>
+    <div class="polaroid">
+      <div class="pslot">
+        <img class="photo-img" src="1.jpeg" alt="фото 1" onerror="this.style.display='none'">
+        <span style="font-size:1.6rem;">📸</span>
+        <span>ФОТО_1</span>
+      </div>
+      <!-- ✏️ ЗАМЕНИ ТЕКСТ подписи полароида -->
+      <div class="pol-caption">with love ♡</div>
+    </div>
+    <!-- ✏️ ЗАМЕНИ ТЕКСТ подписи под рамкой -->
+    <span class="frame-caption">полароид на память</span>
+  </div>
+
+  <!-- ══════════════════════════════
+       РАМКА 2 — Киноплёнка
+       Замени src="ФОТО_2"
+       ══════════════════════════════ -->
+  <div class="reveal" style="--rot:1.8deg;position:relative;display:flex;flex-direction:column;align-items:center;width:100%;max-width:360px;">
+    <div style="position:absolute;top:-10px;left:16px;width:60px;height:18px;background:rgba(245,225,140,.5);border-radius:2px;transform:rotate(-5deg);z-index:20;"></div>
+    <div style="position:absolute;top:-10px;right:16px;width:60px;height:18px;background:rgba(245,225,140,.5);border-radius:2px;transform:rotate(5deg);z-index:20;"></div>
+    <span class="heart-sticker" style="bottom:-20px;left:10px;animation-delay:.5s;transform:rotate(-12deg);font-size:1.2rem;">❤️</span>
+    <div class="film-wrap">
+      <div class="film-holes"><div class="fhole"></div><div class="fhole"></div><div class="fhole"></div><div class="fhole"></div><div class="fhole"></div><div class="fhole"></div><div class="fhole"></div><div class="fhole"></div></div>
+      <div class="film-photo">
+        <img class="photo-img" src="2.jpeg" alt="фото 2" onerror="this.style.display='none'">
+        <span style="font-size:2rem;">🎞️</span>
+        <span>ФОТО_2</span>
+      </div>
+      <div class="film-holes"><div class="fhole"></div><div class="fhole"></div><div class="fhole"></div><div class="fhole"></div><div class="fhole"></div><div class="fhole"></div><div class="fhole"></div><div class="fhole"></div></div>
+    </div>
+    <!-- ✏️ ЗАМЕНИ ТЕКСТ -->
+    <span class="frame-caption">твоя лучшая роль — быть собой 🎬</span>
+  </div>
+
+  <!-- ══════════════════════════════
+       РАМКА 3 — Записка
+       Замени src="ФОТО_3"
+       ══════════════════════════════ -->
+  <div class="reveal" style="--rot:2.2deg;position:relative;display:flex;flex-direction:column;align-items:center;">
+    <svg style="position:absolute;top:-18px;left:12px;transform:rotate(-8deg);z-index:15;filter:drop-shadow(1px 2px 2px rgba(0,0,0,.3));" width="24" height="48" viewBox="0 0 24 48">
+      <path d="M12 2 C6 2 2 6 2 12 L2 38 C2 44 7 47 12 47 C17 47 22 44 22 38 L22 14 C22 9 18 6 14 6 C10 6 7 9 7 14 L7 36 C7 39 9 41 12 41 C15 41 17 39 17 36 L17 16" fill="none" stroke="#aaa" stroke-width="2.2" stroke-linecap="round"/>
+    </svg>
+    <div style="position:absolute;top:30px;right:-10px;width:52px;height:16px;border-radius:2px;transform:rotate(90deg);z-index:15;background:repeating-linear-gradient(45deg,rgba(181,201,176,.75),rgba(181,201,176,.75) 4px,rgba(220,240,220,.75) 4px,rgba(220,240,220,.75) 8px);"></div>
+    <span class="heart-sticker" style="bottom:-18px;right:8px;animation-delay:.6s;transform:rotate(10deg);">🩷</span>
+    <div class="note-card">
+      <div class="note-ruled"></div>
+      <div class="note-photo">
+        <img class="photo-img" src="3.jpeg" alt="фото 3" onerror="this.style.display='none'">
+        <span style="font-size:1.5rem;">🌸</span>
+        <span>ФОТО_3</span>
+      </div>
+      <!-- ✏️ ЗАМЕНИ ТЕКСТ записки -->
+      <div class="note-text">
+        Пусть каждый день будет<br>таким же ярким,<br>как ты сама ♡
+      </div>
+      <div class="stamp"><span>🌷</span>LOVE</div>
+    </div>
+    <span class="frame-caption">записка с сердцем</span>
+  </div>
+
+  <!-- ══════════════════════════════
+       РАМКА 4 — Конверт
+       Замени src="ФОТО_4"
+       ══════════════════════════════ -->
+  <div class="reveal" style="--rot:-1.8deg;position:relative;display:flex;flex-direction:column;align-items:center;">
+    <div style="position:absolute;top:-11px;left:50%;margin-left:-36px;width:72px;height:20px;background:rgba(242,196,206,.6);border-radius:2px;transform:rotate(2deg);z-index:20;"></div>
+    <span class="heart-sticker" style="top:-20px;left:16px;animation-delay:.4s;transform:rotate(-18deg);font-size:1.1rem;">💛</span>
+    <div class="envelope-card">
+      <div class="env-photo">
+        <img class="photo-img" src="4.jpeg" alt="фото 4" onerror="this.style.display='none'">
+        <span style="font-size:1.8rem;">💌</span>
+        <span>ФОТО_4</span>
+      </div>
+      <!-- ✏️ ЗАМЕНИ ТЕКСТ конверта -->
+      <div style="margin-top:1rem;font-family:'Nothing You Could Do',cursive;font-size:1.3rem;color:#7a6030;text-align:center;">«Лучшей маме»</div>
+      <div class="env-wax">🌹</div>
+    </div>
+    <span class="frame-caption" style="margin-top:1.4rem;">письмо с любовью</span>
+  </div>
+
+  <!-- ══════════════════════════════
+       РАМКА 5 — Инстакс (2 фото)
+       Замени src="ФОТО_5" и src="ФОТО_6"
+       ══════════════════════════════ -->
+  <div class="reveal" style="--rot:3.5deg;position:relative;display:flex;flex-direction:column;align-items:center;">
+    <svg style="position:absolute;top:-16px;right:8px;transform:rotate(12deg);z-index:15;filter:drop-shadow(1px 2px 2px rgba(0,0,0,.3));" width="22" height="44" viewBox="0 0 24 48">
+      <path d="M12 2 C6 2 2 6 2 12 L2 38 C2 44 7 47 12 47 C17 47 22 44 22 38 L22 14 C22 9 18 6 14 6 C10 6 7 9 7 14 L7 36 C7 39 9 41 12 41 C15 41 17 39 17 36 L17 16" fill="none" stroke="#bbb" stroke-width="2.2" stroke-linecap="round"/>
+    </svg>
+    <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%) rotate(-1deg);width:100px;height:17px;background:rgba(180,210,200,.55);border-radius:2px;z-index:20;"></div>
+    <span class="heart-sticker" style="top:-22px;left:10px;animation-delay:.7s;transform:rotate(-15deg);font-size:1rem;">🩷</span>
+    <div class="instax-strip">
+      <div class="strip-slot">
+        <img class="photo-img" src="5.jpeg" alt="фото 5" onerror="this.style.display='none'">
+        <span style="font-size:1.2rem;">📷</span><span>ФОТО_5</span>
+      </div>
+      <div class="strip-slot">
+        <img class="photo-img" src="6.jpeg" alt="фото 6" onerror="this.style.display='none'">
+        <span style="font-size:1.2rem;">📷</span><span>ФОТО_6</span>
+      </div>
+      <!-- ✏️ ЗАМЕНИ ТЕКСТ -->
+      <span class="instax-label">best memories 🎀</span>
+    </div>
+    <span class="frame-caption">красива навсегда</span>
+  </div>
+
+  <!-- ══════════════════════════════
+       РАМКА 6 — Скрапбук (4 фото)
+       Замени src="ФОТО_7", "ФОТО_8", "ФОТО_9", "ФОТО_10"
+       ══════════════════════════════ -->
+  <div class="reveal" style="--rot:-2deg;position:relative;display:flex;flex-direction:column;align-items:center;">
+    <svg style="position:absolute;top:-26px;left:50%;transform:translateX(-50%) rotate(-5deg);z-index:20;filter:drop-shadow(1px 2px 2px rgba(0,0,0,.3));" width="28" height="54" viewBox="0 0 24 48">
+      <path d="M12 2 C6 2 2 6 2 12 L2 38 C2 44 7 47 12 47 C17 47 22 44 22 38 L22 14 C22 9 18 6 14 6 C10 6 7 9 7 14 L7 36 C7 39 9 41 12 41 C15 41 17 39 17 36 L17 16" fill="none" stroke="#999" stroke-width="2.4" stroke-linecap="round"/>
+    </svg>
+    <div style="position:absolute;top:40px;left:-10px;width:55px;height:16px;border-radius:2px;transform:rotate(90deg);z-index:15;background:repeating-linear-gradient(45deg,rgba(242,196,206,.75),rgba(242,196,206,.75) 4px,rgba(253,232,236,.75) 4px,rgba(253,232,236,.75) 8px);"></div>
+    <span class="heart-sticker" style="bottom:-18px;right:12px;animation-delay:.8s;transform:rotate(12deg);font-size:1.6rem;">🩷</span>
+    <span class="heart-sticker" style="top:40px;right:-18px;animation-delay:.5s;transform:rotate(20deg);font-size:1.1rem;">✨</span>
+    <div class="scrap-page">
+      <div class="scrap-ruled"></div>
+      <!-- ✏️ ЗАМЕНИ ТЕКСТ заголовка скрапбука -->
+      <div class="scrap-title">наши моменты ♡</div>
+      <div class="scrap-row">
+        <div class="scrap-slot wide">
+          <img class="photo-img" src="7.jpeg" alt="фото 7" onerror="this.style.display='none'">
+          <span style="font-size:1.2rem;">🌸</span><span>ФОТО_7</span>
+        </div>
+        <div class="scrap-slot">
+          <img class="photo-img" src="8.jpeg" alt="фото 8" onerror="this.style.display='none'">
+          <span style="font-size:1.2rem;">🌷</span><span>ФОТО_8</span>
+        </div>
+      </div>
+      <div class="scrap-row">
+        <div class="scrap-slot">
+          <img class="photo-img" src="9.jpeg" alt="фото 9" onerror="this.style.display='none'">
+          <span style="font-size:1.2rem;">✨</span><span>ФОТО_9</span>
+        </div>
+        <div class="scrap-slot wide">
+          <img class="photo-img" src="10.jpeg" alt="фото 10" onerror="this.style.display='none'">
+          <span style="font-size:1.2rem;">💐</span><span>ФОТО_10</span>
+        </div>
+      </div>
+      <div class="scrap-footer">
+        <!-- ✏️ ЗАМЕНИ ТЕКСТ подписи -->
+        <span class="scrap-sign" style="font-family:'Nothing You Could Do',cursive;font-size:1.1rem;color:var(--ink);">с любовью 🎀</span>
+        <span style="font-size:1.4rem;transform:rotate(10deg);display:inline-block;">🍓</span>
+      </div>
+    </div>
+    <span class="frame-caption">страница нашей семьи</span>
+  </div>
+
+</section>
+
+<footer class="footer">
+  <span class="footer-deco">🌸</span>
+  <!-- ✏️ ЗАМЕНИ ТЕКСТ футера -->
+  <span>Счастья, смеха и любви — всегда и во всём ♡</span>
+</footer>
+
+<script>
+// Stars
+const hero = document.getElementById('hero');
+for (let i = 0; i < 70; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  const sz = Math.random() < .25 ? 3 : 1.5;
+  s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;width:${sz}px;height:${sz}px;--d:${3+Math.random()*5}s;--dl:${Math.random()*7}s`;
+  hero.appendChild(s);
+}
+// Petals
+const petals = ['🌸','🌷','✨','💛','🌹'];
+for (let i = 0; i < 10; i++) {
+  const p = document.createElement('div');
+  p.className = 'petal';
+  p.textContent = petals[i % petals.length];
+  p.style.cssText = `left:${5+Math.random()*90}%;bottom:${-5+Math.random()*20}%;--pd:${7+Math.random()*7}s;--pdl:${Math.random()*8}s;font-size:${.8+Math.random()*.7}rem`;
+  hero.appendChild(p);
+}
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+
+</html>
